@@ -9,9 +9,8 @@ import matplotlib.pyplot as plt
 
 
 def load_data(fName = '../datasets/UN4col.csv'):
-  fp = open(fName)
-  XX = np.loadtxt(fp)
-  fp.close()
+  with open(fName) as fp:
+    XX = np.loadtxt(fp)
   return XX
   
 

@@ -26,17 +26,9 @@ def abline(intercept, gradient, *args, **kwargs):
     a = plt.gca()
     xlim = a.get_xlim()
     ylim = a.get_ylim()
-    
-    if args:
-        sty = args[0]
-    else:
-        sty = 'r'
-        
-    if kwargs:
-        lw = kwargs['linewidth']
-    else:
-        lw = 1
 
+    sty = args[0] if args else 'r'
+    lw = kwargs['linewidth'] if kwargs else 1
     a.plot(xlim, [intercept + gradient * x for x in xlim], sty, linewidth=lw)
     a.set_xlim(xlim)
     a.set_ylim(ylim)
@@ -78,24 +70,16 @@ def make_single_plot(xarr,yarr,xlabel=None,ylabel=None,title=None, xinches=4, yi
 def lab_experiment(noise_factor=0.5,seed=12345, exptnum=0):
     global np, plt
     x, y = make_data_points(noise_factor,seed)
-    if exptnum:
-      title = "Lab Experiment %d"%(exptnum)
-    else:
-      title = "Lab Experiment"  
-
-    ax = make_single_plot(x,y,'Force','Acceleration', title)
-    return ax
+    title = "Lab Experiment %d"%(exptnum) if exptnum else "Lab Experiment"
+    return make_single_plot(x,y,'Force','Acceleration', title)
 
     
 def lab_experiment_with_line(noise_factor=0.5, gradient_offset=0, intercept_offset=0, style='r', linewidth=1, seed=12345, exptnum=0):
         
     x, y = make_data_points(noise_factor,seed)
-    if exptnum:
-      title = "Lab Experiment %d"%(exptnum)
-    else:
-      title = "Lab Experiment"  
+    title = "Lab Experiment %d"%(exptnum) if exptnum else "Lab Experiment"
     ax = make_single_plot(x,y,'Force','Acceleration', title)
-    
+
     # statsmodel lin reg
     X = sm.add_constant(x)
     model = sm.OLS(y,X)
